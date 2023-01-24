@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;;
 
 public class Texture {
+    public static final String NO_TEX = "defaults/white.png";
     private static final String PATH_BEGINNING = "../../../";
     private String filePath;
     private boolean mipmaps;
