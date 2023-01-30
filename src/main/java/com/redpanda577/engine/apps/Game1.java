@@ -5,6 +5,7 @@ import com.redpanda577.engine.src.Window;
 import com.redpanda577.engine.src.data.Shapes;
 import com.redpanda577.engine.src.data.basics.Texture;
 import com.redpanda577.engine.src.data.basics.TextureRegion;
+import com.redpanda577.engine.src.input.Input;
 import com.redpanda577.engine.src.rendering.Camera;
 import com.redpanda577.engine.src.rendering.Object;
 import com.redpanda577.engine.src.rendering.renderers.Renderer;
@@ -37,11 +38,15 @@ public class Game1 {
 
     public void update(){
         while(!window.close()){
+            if(Input.keys[Input.KEY_ESCAPE]) break;
+
             window.clear(false);
             cam.updateDims(window.width, window.height);
 
             main.render();
 
+            if(Input.keyDown(Input.KEY_SPACE)) System.out.println("Input slay.");
+            
             window.update();
         }
         end();
