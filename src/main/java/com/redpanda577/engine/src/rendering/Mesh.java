@@ -2,6 +2,7 @@ package com.redpanda577.engine.src.rendering;
 
 import com.redpanda577.engine.src.data.Vertex;
 import com.redpanda577.engine.src.data.basics.Texture;
+import com.redpanda577.engine.src.data.basics.TextureRegion;
 import com.redpanda577.engine.src.data.basics.Vao;
 
 public class Mesh{
@@ -15,6 +16,9 @@ public class Mesh{
 
     public Shader shader;
     public Texture texture;
+
+    public boolean useTexRegion = false;
+    public TextureRegion texRegion;
 
     private Vao data;
 
@@ -51,9 +55,20 @@ public class Mesh{
             positions[i * 3 + 0] = current.getPosition().x;
             positions[i * 3 + 1] = current.getPosition().y;
             positions[i * 3 + 2] = current.getPosition().z;
+            
+            float uvx = current.getUv().x;
+            float uvy = current.getUv().y;
 
-            uvs[i * 2 + 0] = current.getUv().x;
-            uvs[i * 2 + 1] = current.getUv().y;
+            if(useTexRegion){
+                uvx *= texRegion.area.width;
+                uvx += texRegion.area.x;
+
+                uvy *= texRegion.area.height;
+                uvy += texRegion.area.y;
+            }
+
+            uvs[i * 2 + 0] = uvx;
+            uvs[i * 2 + 1] = uvy;
 
             normals[i * 3 + 0] = current.getNormal().x;
             normals[i * 3 + 1] = current.getNormal().y;
@@ -72,6 +87,32 @@ public class Mesh{
 
         data.bind();
         data.createIndexBuffer(indices);
+        data.unbind();
+    }
+
+    public void recalculateUVs(){
+        uvs = new float[vertices.length * 2];
+
+        for(int i = 0; i < vertices.length; i++){
+            Vertex current = vertices[i];
+
+            float uvx = current.getUv().x;
+            float uvy = current.getUv().y;
+
+            if(useTexRegion){
+                uvx *= texRegion.area.width;
+                uvx += texRegion.area.x;
+
+                uvy *= texRegion.area.height;
+                uvy += texRegion.area.y;
+            }
+
+            uvs[i * 2 + 0] = uvx;
+            uvs[i * 2 + 1] = uvy;
+        }
+
+        data.bind();
+        data.createAttribute(1, uvs, 2);
         data.unbind();
     }
 
