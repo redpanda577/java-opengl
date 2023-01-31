@@ -13,7 +13,7 @@ public class Camera {
     public Vector3f position;
     public Vector3f rotation;
 
-    public float zoom = 100;
+    public float zoom = 50;
 
     public Camera(float near, float far){
         width = 16;

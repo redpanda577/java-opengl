@@ -1,5 +1,6 @@
 package com.redpanda577.engine.src.rendering;
 
+import com.redpanda577.engine.src.data.Rect;
 import com.redpanda577.engine.src.data.Vertex;
 import com.redpanda577.engine.src.data.basics.Texture;
 import com.redpanda577.engine.src.data.basics.TextureRegion;
@@ -13,6 +14,8 @@ public class Mesh{
     private float[] uvs;
     private float[] normals;
     private int[] indices;
+
+    public Rect areaRect;
 
     public Shader shader;
     public Texture texture;
@@ -74,6 +77,22 @@ public class Mesh{
             normals[i * 3 + 1] = current.getNormal().y;
             normals[i * 3 + 2] = current.getNormal().z;
         }
+
+        float minX = positions[0];
+        float maxX = positions[0];
+
+        float minY = positions[1];
+        float maxY = positions[1];
+
+        for (int i = 0; i < positions.length; i += 3) {
+            if(positions[i] < minX) minX = positions[i];
+            if(positions[i] > maxX) maxX = positions[i];
+
+            if(positions[i + 1] < minY) minY = positions[i + 1];
+            if(positions[i + 1] > maxY) maxY = positions[i + 1];
+        }
+
+        this.areaRect = new Rect(minX, minY, maxX - minX, maxY - minY);
 
         data.bind();
         data.createAttribute(0, positions, 3);

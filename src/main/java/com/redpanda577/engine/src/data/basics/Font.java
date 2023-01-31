@@ -43,8 +43,8 @@ public class Font {
         return renderString(text, charWidth);
     }
 
-    public Mesh getStringMesh(String text, float width){
-        return renderString(text, width);
+    public Mesh getStringMesh(String text, float pt){
+        return renderString(text, pt);
     }
 
     private Mesh renderString(String text, float width){

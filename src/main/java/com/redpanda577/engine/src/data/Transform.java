@@ -11,6 +11,11 @@ public class Transform {
     public float rotation;
     public Vector2f scale;
 
+    //used for inheriting from parent
+    public Vector3f finalPosition = position;
+    float finalRotation = rotation;
+    Vector2f finalScale = scale;
+
     public float width, height;
 
     private Matrix4f matrix;
@@ -24,12 +29,20 @@ public class Transform {
     }
     
     public Matrix4f recalculate(){
-        matrix.identity().translate(position).
-            rotateZ((float)Math.toRadians(rotation)).
-            scale(new Vector3f(scale, 1.0f));
+        finalPosition = new Vector3f(position);
+        finalRotation = 0 + rotation;
+        finalScale = new Vector2f(scale);
 
-        if(parent != null)
-            matrix.mul(parent.recalculate(), matrix);
+        if(parent != null){
+            parent.recalculate();
+            finalPosition.add(parent.finalPosition);
+            finalRotation += parent.finalRotation;
+            finalScale.mul(parent.finalScale);
+        }
+
+        matrix.identity().translate(finalPosition).
+            rotateZ((float)Math.toRadians(finalRotation)). //TODO: rotate around the parents origin if it extists.
+            scale(new Vector3f(finalScale, 1.0f));
 
         //System.out.println(matrix.toString());
         return matrix;

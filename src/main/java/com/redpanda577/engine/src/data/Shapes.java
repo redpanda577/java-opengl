@@ -9,16 +9,16 @@ public class Shapes {
     public static Mesh rectangle(){
         Mesh result = new Mesh();
         Vertex[] vertices = new Vertex[]{
-            new Vertex(new Vector3f(1.0f, 0.0f, 0.0f), 
+            new Vertex(new Vector3f(0.5f, 0.5f, 0.0f), 
                 new Vector2f(1.0f, 1.0f), 
                 new Vector3f(0.0f, 0.0f, 1.0f)),
-            new Vertex(new Vector3f(1.0f, -1.0f, 0.0f), 
+            new Vertex(new Vector3f(0.5f, -0.5f, 0.0f), 
                 new Vector2f(1.0f, 0.0f), 
                 new Vector3f(0.0f, 0.0f, 1.0f)),
-            new Vertex(new Vector3f(0.0f, -1.0f, 0.0f), 
+            new Vertex(new Vector3f(-0.5f, -0.5f, 0.0f), 
                 new Vector2f(0.0f, 0.0f), 
                 new Vector3f(0.0f, 0.0f, 1.0f)),
-            new Vertex(new Vector3f(0.0f, 0.0f, 0.0f), 
+            new Vertex(new Vector3f(-0.5f, 0.5f, 0.0f), 
                 new Vector2f(0.0f, 1.0f), 
                 new Vector3f(0.0f, 0.0f, 1.0f)) 
         };
