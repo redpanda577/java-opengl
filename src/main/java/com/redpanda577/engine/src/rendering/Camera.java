@@ -27,6 +27,18 @@ public class Camera {
         rotation = new Vector3f(0.0f, 0.0f, 0.0f);
     }
 
+    public Camera(){
+        width = 16;
+        height = 9;
+        this.near = 0;
+        this.far = 1;
+
+        genUIOrthographic();
+
+        position = new Vector3f(0.0f, 0.0f, 0.0f);
+        rotation = new Vector3f(0.0f, 0.0f, 0.0f);
+    }
+
     public void updateDims(float width, float height){
         this.width = width / zoom;
         this.height = height / zoom;
@@ -38,6 +50,12 @@ public class Camera {
         projection = new Matrix4f().ortho(-halfWidth, halfWidth,
             -halfHeight, halfHeight,
             near, far);
+    }
+
+    public void genUIOrthographic(){
+        projection = new Matrix4f().ortho(0, width,
+            height, 0,
+            -1, 1);
     }
 
     public void genPerspective(){

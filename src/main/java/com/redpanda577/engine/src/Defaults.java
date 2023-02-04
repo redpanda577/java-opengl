@@ -1,5 +1,6 @@
 package com.redpanda577.engine.src;
 
+import com.redpanda577.engine.src.data.basics.Font;
 import com.redpanda577.engine.src.rendering.Shader;
 
 public class Defaults {
@@ -7,6 +8,9 @@ public class Defaults {
     
     public static Shader defaultRender;
     public static Shader defaultUI;
+
+    private static final String CONSOLAS_LOC = "defaults/Consolas.png";
+    public static Font defaultFont;
 
     public static void load(){
         defaultRender = new Shader();
@@ -18,5 +22,12 @@ public class Defaults {
         defaultUI.addShader(Shader.VERTEX, PROJECT_LOC + "assets/uiVertex.glsl");
         defaultUI.addShader(Shader.FRAGMENT, PROJECT_LOC + "assets/uiFragment.glsl");
         defaultUI.completeShader();
+
+        defaultFont = new Font(CONSOLAS_LOC, 16, 16);
+    }
+
+    public static void end(){
+        defaultRender.destroyShader();
+        defaultUI.destroyShader();
     }
 }

@@ -8,16 +8,18 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import com.redpanda577.engine.src.data.Vertex;
+import com.redpanda577.engine.src.nodes.UISpriteNode;
 import com.redpanda577.engine.src.rendering.Mesh;
+import com.redpanda577.engine.src.rendering.renderers.UIRenderer;
 
 public class Font {
     private static final float ZPOS = 0.0f;
     private static final int VERTICES_PER_QUAD = 4;
-    private static final float SIZE_NORMALIZER = 1;
+    public static int DEFAULT_FONT_POINT = 12;
+    private static final float SIZE_NORMALIZER = 0.01f;
 
     private String filePath;
     private int columns, rows;
-    private float charWidth;
 
     private Texture fontTex;
 
@@ -25,7 +27,6 @@ public class Font {
         this.filePath = filePath;
         this.columns = columns;
         this.rows = rows;
-        this.charWidth = 1;
 
         fontTex = new Texture(this.filePath);
     }
@@ -34,21 +35,20 @@ public class Font {
         this.filePath = filePath;
         this.columns = columns;
         this.rows = rows;
-        this.charWidth = charWidth;
 
         fontTex = new Texture(this.filePath);
     }
 
-    public Mesh getStringMesh(String text){
-        return renderString(text, charWidth);
+    public UISpriteNode getStringMesh(String text, UIRenderer renderer){
+        return renderString(text, DEFAULT_FONT_POINT, renderer);
     }
 
-    public Mesh getStringMesh(String text, float pt){
-        return renderString(text, pt);
+    public UISpriteNode getStringMesh(String text, float pt, UIRenderer renderer){
+        return renderString(text, pt, renderer);
     }
 
-    private Mesh renderString(String text, float width){
-        Mesh result = new Mesh();
+    private UISpriteNode renderString(String text, float width, UIRenderer renderer){
+        Mesh mesh = new Mesh();
 
         byte[] chars = text.getBytes(Charset.forName("ISO-8859-1"));
         int numChars = chars.length;
@@ -100,8 +100,10 @@ public class Font {
         for(int i = 0; i < indices.size(); i++)
             indicesArray[i] = indices.get(i);
 
-        result.setVertices(verticesArray);
-        result.setIndices(indicesArray);
+        mesh.setVertices(verticesArray);
+        mesh.setIndices(indicesArray);
+
+        UISpriteNode result = new UISpriteNode(mesh, renderer);
         result.texture = fontTex;
         return result;
     }

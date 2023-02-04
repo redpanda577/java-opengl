@@ -2,7 +2,6 @@ package com.redpanda577.engine.src.rendering;
 
 import com.redpanda577.engine.src.data.Rect;
 import com.redpanda577.engine.src.data.Vertex;
-import com.redpanda577.engine.src.data.basics.Texture;
 import com.redpanda577.engine.src.data.basics.TextureRegion;
 import com.redpanda577.engine.src.data.basics.Vao;
 
@@ -17,32 +16,10 @@ public class Mesh{
 
     public Rect areaRect;
 
-    public Shader shader;
-    public Texture texture;
-
-    public boolean useTexRegion = false;
-    public TextureRegion texRegion;
-
     private Vao data;
 
     public Mesh(){
         data = Vao.create();
-        texture = new Texture(defaultTex, false);
-    }
-
-    public Mesh(String texturePath){
-        data = Vao.create();
-        texture = new Texture(texturePath, false);
-    }
-
-    public Mesh(String texturePath, boolean mipmaps){
-        data = Vao.create();
-        texture = new Texture(texturePath, mipmaps);
-    }
-
-    public Mesh(Texture tex){
-        data = Vao.create();
-        texture = tex;
     }
 
     public void setVertices(Vertex[] nVertices){
@@ -61,14 +38,6 @@ public class Mesh{
             
             float uvx = current.getUv().x;
             float uvy = current.getUv().y;
-
-            if(useTexRegion){
-                uvx *= texRegion.area.width;
-                uvx += texRegion.area.x;
-
-                uvy *= texRegion.area.height;
-                uvy += texRegion.area.y;
-            }
 
             uvs[i * 2 + 0] = uvx;
             uvs[i * 2 + 1] = uvy;
@@ -118,13 +87,29 @@ public class Mesh{
             float uvx = current.getUv().x;
             float uvy = current.getUv().y;
 
-            if(useTexRegion){
-                uvx *= texRegion.area.width;
-                uvx += texRegion.area.x;
+            uvs[i * 2 + 0] = uvx;
+            uvs[i * 2 + 1] = uvy;
+        }
 
-                uvy *= texRegion.area.height;
-                uvy += texRegion.area.y;
-            }
+        data.bind();
+        data.createAttribute(1, uvs, 2);
+        data.unbind();
+    }
+
+    public void recalculateUVs(TextureRegion texRegion){
+        uvs = new float[vertices.length * 2];
+
+        for(int i = 0; i < vertices.length; i++){
+            Vertex current = vertices[i];
+
+            float uvx = current.getUv().x;
+            float uvy = current.getUv().y;
+
+            uvx *= texRegion.area.width;
+            uvx += texRegion.area.x;
+
+            uvy *= texRegion.area.height;
+            uvy += texRegion.area.y;
 
             uvs[i * 2 + 0] = uvx;
             uvs[i * 2 + 1] = uvy;

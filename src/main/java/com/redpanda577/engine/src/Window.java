@@ -5,6 +5,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import com.redpanda577.engine.src.input.Input;
+import com.redpanda577.engine.src.input.Time;
 
 import java.nio.*;
 
@@ -113,6 +114,8 @@ public class Window{
     public void update(){
         glfwPollEvents();
         glfwSwapBuffers(window);
+
+		Time.tick();
     }
 
     public boolean close(){
@@ -127,14 +130,16 @@ public class Window{
 
         // Free the window callbacks and destroy the window
 		glfwFreeCallbacks(window);
-		glfwDestroyWindow(window);
-
+		
 		// Terminate GLFW and free the error callback
-		glfwTerminate();
 		glfwSetErrorCallback(null).free();
 		glfwSetWindowCloseCallback(window, null).free();
 		glfwSetWindowSizeCallback(window, null).free();
-
+		glfwDestroyWindow(window);
+		
+		glfwTerminate();
+		
+		Defaults.end();
 		System.out.println("Closed correctly.");
     }
 }

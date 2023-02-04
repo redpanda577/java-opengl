@@ -41,7 +41,7 @@ public class Transform {
         }
 
         matrix.identity().translate(finalPosition).
-            rotateZ((float)Math.toRadians(finalRotation)). //TODO: rotate around the parents origin if it extists.
+            rotateZ((float)Math.toRadians(finalRotation)). //TODO: rotate around the parents origin if it exists.
             scale(new Vector3f(finalScale, 1.0f));
 
         //System.out.println(matrix.toString());

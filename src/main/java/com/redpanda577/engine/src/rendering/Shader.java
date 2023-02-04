@@ -58,6 +58,10 @@ public class Shader{
         }
     }
 
+    public void destroyShader(){
+        GL20.glDeleteProgram(programID);
+    }
+
     public void bind(){
         GL20.glUseProgram(programID);
     }
@@ -68,6 +72,14 @@ public class Shader{
 
     public int getUniformLocation(String name){
         return GL20.glGetUniformLocation(programID, name);
+    }
+
+    public void setBoolean(String name, boolean value){
+        setVector1i(name, value ? 1 : 0);
+    }
+
+    public void setVector1i(String name, int value){
+        GL20.glUniform1i(getUniformLocation(name), value);
     }
 
     public void setVector4f(String name, Vector4f value){
