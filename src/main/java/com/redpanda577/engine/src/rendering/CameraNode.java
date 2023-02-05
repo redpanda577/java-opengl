@@ -1,21 +1,22 @@
 package com.redpanda577.engine.src.rendering;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public class Camera {
+import com.redpanda577.engine.src.nodes.Node;
+
+public class CameraNode extends Node {
     private float width, height;
     private float near, far;
     private Matrix4f projection;
     private Matrix4f view;
 
-    public boolean freeRot = true;
-    public Vector3f position;
-    public Vector3f rotation;
+    private Vector2f camRot;
 
     public float zoom = 50;
 
-    public Camera(float near, float far){
+    public CameraNode(float near, float far){
         width = 16;
         height = 9;
         this.near = near;
@@ -23,11 +24,11 @@ public class Camera {
 
         genOrthographic();
 
-        position = new Vector3f(0.0f, 0.0f, 0.0f);
-        rotation = new Vector3f(0.0f, 0.0f, 0.0f);
+        transform.position = new Vector3f(0.0f, 0.0f, 0.0f);
+        camRot = new Vector2f(0.0f, 0.0f);
     }
 
-    public Camera(){
+    public CameraNode(){
         width = 16;
         height = 9;
         this.near = 0;
@@ -35,8 +36,8 @@ public class Camera {
 
         genUIOrthographic();
 
-        position = new Vector3f(0.0f, 0.0f, 0.0f);
-        rotation = new Vector3f(0.0f, 0.0f, 0.0f);
+        transform.position = new Vector3f(0.0f, 0.0f, 0.0f);
+        camRot = new Vector2f(0.0f, 0.0f);
     }
 
     public void updateDims(float width, float height){
@@ -70,11 +71,12 @@ public class Camera {
     }
 
     public void genView(){
-        Vector3f cameraPos = position;
+        Vector3f cameraPos = transform.position;
 
         view = new Matrix4f().identity();
-        view.rotate((float)Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
-            .rotate((float)Math.toRadians(rotation.y), new Vector3f(0, 1, 0));
+        view.rotate((float)Math.toRadians(camRot.x), new Vector3f(1, 0, 0))
+            .rotate((float)Math.toRadians(camRot.y), new Vector3f(0, 1, 0))
+            .rotate((float)Math.toRadians(transform.rotation), new Vector3f(0, 0, 1));
         view.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
     }
 

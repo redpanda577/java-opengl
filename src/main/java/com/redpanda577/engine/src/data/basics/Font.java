@@ -10,7 +10,7 @@ import org.joml.Vector3f;
 import com.redpanda577.engine.src.data.Vertex;
 import com.redpanda577.engine.src.nodes.UISpriteNode;
 import com.redpanda577.engine.src.rendering.Mesh;
-import com.redpanda577.engine.src.rendering.renderers.UIRenderer;
+import com.redpanda577.engine.src.rendering.renderers.Renderer;
 
 public class Font {
     private static final float ZPOS = 0.0f;
@@ -39,15 +39,15 @@ public class Font {
         fontTex = new Texture(this.filePath);
     }
 
-    public UISpriteNode getStringMesh(String text, UIRenderer renderer){
+    public UISpriteNode getStringMesh(String text, Renderer renderer){
         return renderString(text, DEFAULT_FONT_POINT, renderer);
     }
 
-    public UISpriteNode getStringMesh(String text, float pt, UIRenderer renderer){
+    public UISpriteNode getStringMesh(String text, float pt, Renderer renderer){
         return renderString(text, pt, renderer);
     }
 
-    private UISpriteNode renderString(String text, float width, UIRenderer renderer){
+    private UISpriteNode renderString(String text, float width, Renderer renderer){
         Mesh mesh = new Mesh();
 
         byte[] chars = text.getBytes(Charset.forName("ISO-8859-1"));

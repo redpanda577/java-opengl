@@ -1,5 +1,5 @@
 package com.redpanda577.engine.src.rendering;
 
 public interface IRenderable {
-    public void render(Camera cam);
+    public void render(CameraNode cam);
 }

@@ -1,5 +1,6 @@
 package com.redpanda577.engine.apps;
 
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import com.redpanda577.engine.src.Defaults;
@@ -7,26 +8,26 @@ import com.redpanda577.engine.src.Window;
 import com.redpanda577.engine.src.data.Shapes;
 import com.redpanda577.engine.src.data.basics.Texture;
 import com.redpanda577.engine.src.data.basics.TextureRegion;
+import com.redpanda577.engine.src.functionality.Scene;
 import com.redpanda577.engine.src.input.Input;
-import com.redpanda577.engine.src.nodes.MeshNode;
 import com.redpanda577.engine.src.nodes.SpriteNode;
 import com.redpanda577.engine.src.nodes.UISpriteNode;
-import com.redpanda577.engine.src.rendering.Camera;
+import com.redpanda577.engine.src.physics.AABBNode;
+import com.redpanda577.engine.src.rendering.CameraNode;
 import com.redpanda577.engine.src.rendering.renderers.Renderer;
 import com.redpanda577.engine.src.rendering.renderers.UIRenderer;
 
 public class Game1 {
     Window window = new Window();
-    Camera cam = new Camera(0.01f, 1000.0f);
-    Camera uicam = new Camera();
+    Scene scene = new Scene();
 
-    Renderer main = new Renderer(cam);
-    UIRenderer ui = new UIRenderer(uicam);
+    CameraNode cam = new CameraNode(0.01f, 1000.0f);
+    CameraNode uicam = new CameraNode();
 
-    SpriteNode object;
-    MeshNode object2;
+    AABBNode boundingBox;
+    AABBNode boundingBox2;
 
-    UISpriteNode textObject;
+    SpriteNode object2;
 
     public Game1() {
         window.init();
@@ -34,22 +35,43 @@ public class Game1 {
     }
     
     public void start(){
-        cam.position.z = 15;
+        scene.registerNode(cam);
+        scene.registerNode(uicam);
+
+        scene.primary = scene.registerRenderer(new Renderer(cam));
+        scene.primaryUI = scene.registerRenderer(new UIRenderer(uicam));
+
+        cam.transform.position.z = 15;
         
-        object = new SpriteNode(Shapes.rectangle(), main); //Object(Mesh, Renderer);
+        SpriteNode object = new SpriteNode(Shapes.rectangle(), scene.primary); //Object(Mesh, Renderer);
+        scene.registerNode(object);
         object.shader = Defaults.defaultRender; //set shader
         object.texture = new Texture("assets/scribbles.png"); //override the default texture
 
         object.useTexRegion = true;
         object.texRegion = new TextureRegion(object.texture, 2, 1, 2, 2);
-        object.mesh.recalculateUVs();
+        object.getMesh().recalculateUVs();
 
-        object2 = new MeshNode(Shapes.rectangle(3, 1), main);
-        object2.shader = Defaults.defaultRender;
-        object2.transform.parent = object.transform;
-        object2.transform.position.y += 1;
+        boundingBox = new AABBNode();
+        boundingBox.transform.setParent(object.transform);
+        scene.registerNode(boundingBox);
+        boundingBox.genVisual();
+        boundingBox.recalculate();
 
-        textObject = Defaults.defaultFont.getStringMesh("YAAAAAS BITCH!", ui);
+        object2 = new SpriteNode(Shapes.rectangle(), scene.primary); //Object(Mesh, Renderer);
+        scene.registerNode(object2);
+        object2.shader = Defaults.defaultRender; //set shader
+        object2.texture = new Texture("assets/scribbles.png"); //override the default texture
+        object2.transform.position = new Vector3f(0.5f, 3, 0);
+
+        boundingBox2 = new AABBNode();
+        boundingBox2.transform.setParent(object2.transform);
+        scene.registerNode(boundingBox2);
+        boundingBox2.genVisual();
+        boundingBox2.recalculate();
+        
+        UISpriteNode textObject = Defaults.defaultFont.getStringMesh("YAAAAAS BITCH!", scene.primaryUI);
+        scene.registerNode(textObject);
         textObject.shader = Defaults.defaultUI;
         textObject.tint = new Vector4f(1.0f, 1.0f, 1.0f, 1.0f);
         
@@ -64,11 +86,12 @@ public class Game1 {
             cam.updateDims(window.width, window.height);
             uicam.updateDims(window.width, window.height);
 
-            main.render();
-            ui.render();
-
-            if(Input.keys[Input.KEY_SPACE]) object.transform.rotation += 0.1f;
+            //do stuff here!
+            if(boundingBox.vsAABBNode(boundingBox2)) System.out.println("Colliding");
+            object2.transform.position.y -= 0.01f;
+            boundingBox2.recalculate();
             
+            scene.update();
             window.update();
         }
         end();

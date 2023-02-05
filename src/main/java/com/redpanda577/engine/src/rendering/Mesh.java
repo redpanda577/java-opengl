@@ -61,7 +61,8 @@ public class Mesh{
             if(positions[i + 1] > maxY) maxY = positions[i + 1];
         }
 
-        this.areaRect = new Rect(minX, minY, maxX - minX, maxY - minY);
+        this.areaRect = new Rect(minX, minY, Math.abs(minX - maxX), Math.abs(minY - maxY));
+        //System.out.println(minX + ", " + maxX);
 
         data.bind();
         data.createAttribute(0, positions, 3);

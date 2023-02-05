@@ -3,30 +3,37 @@ package com.redpanda577.engine.src.nodes;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
-import com.redpanda577.engine.src.data.Transform;
-import com.redpanda577.engine.src.rendering.Camera;
+import com.redpanda577.engine.src.rendering.CameraNode;
 import com.redpanda577.engine.src.rendering.IRenderable;
 import com.redpanda577.engine.src.rendering.Mesh;
 import com.redpanda577.engine.src.rendering.Shader;
 import com.redpanda577.engine.src.rendering.renderers.Renderer;
 
 public class MeshNode extends Node implements IRenderable {
-    public Mesh mesh;
+    protected Mesh mesh;
+
+    public Mesh getMesh() {
+        return mesh;
+    }
+
+    public void setMesh(Mesh mesh) {
+        this.mesh = mesh;
+        if(mesh != null) transform.setDimensions(mesh.areaRect.width, mesh.areaRect.height);
+    }
 
     public Shader shader;
 
     public Vector4f tint;
 
     public MeshNode(Mesh mesh, Renderer renderer){
-        this.mesh = mesh;
-        this.transform = new Transform();
+        setMesh(mesh);
         this.tint = new Vector4f(1, 1, 1, 1);
 
         renderer.addRenderable(this);
     }
 
     @Override
-    public void render(Camera cam) {
+    public void render(CameraNode cam) {
         shader.bind();
         shader.setMatrix4f("projection", cam.getProjection());
         shader.setMatrix4f("world", transform.recalculate());

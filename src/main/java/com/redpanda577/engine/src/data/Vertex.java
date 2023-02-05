@@ -26,6 +26,12 @@ public class Vertex{
         normal = new Vector3f(0, 0, 1);
     }
 
+    public Vertex(Vector3f pos) {
+        position = pos;
+        uv = new Vector2f(0, 0);
+        normal = new Vector3f(0, 0, 1);
+    }
+
     public Vector3f getPosition() {
         return position;
     }
