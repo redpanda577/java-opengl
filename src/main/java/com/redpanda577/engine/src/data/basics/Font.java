@@ -39,15 +39,15 @@ public class Font {
         fontTex = new Texture(this.filePath);
     }
 
-    public UISpriteNode getStringMesh(String text, Renderer renderer){
-        return renderString(text, DEFAULT_FONT_POINT, renderer);
+    public UISpriteNode getStringMesh(String text){
+        return renderString(text, DEFAULT_FONT_POINT);
     }
 
-    public UISpriteNode getStringMesh(String text, float pt, Renderer renderer){
-        return renderString(text, pt, renderer);
+    public UISpriteNode getStringMesh(String text, float pt){
+        return renderString(text, pt);
     }
 
-    private UISpriteNode renderString(String text, float width, Renderer renderer){
+    private UISpriteNode renderString(String text, float width){
         Mesh mesh = new Mesh();
 
         byte[] chars = text.getBytes(Charset.forName("ISO-8859-1"));
@@ -103,7 +103,7 @@ public class Font {
         mesh.setVertices(verticesArray);
         mesh.setIndices(indicesArray);
 
-        UISpriteNode result = new UISpriteNode(mesh, renderer);
+        UISpriteNode result = new UISpriteNode(mesh);
         result.texture = fontTex;
         return result;
     }

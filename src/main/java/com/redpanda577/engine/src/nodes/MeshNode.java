@@ -25,11 +25,9 @@ public class MeshNode extends Node implements IRenderable {
 
     public Vector4f tint;
 
-    public MeshNode(Mesh mesh, Renderer renderer){
+    public MeshNode(Mesh mesh){
         setMesh(mesh);
         this.tint = new Vector4f(1, 1, 1, 1);
-
-        renderer.addRenderable(this);
     }
 
     @Override

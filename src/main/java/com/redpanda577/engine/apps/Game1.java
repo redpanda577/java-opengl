@@ -43,8 +43,7 @@ public class Game1 {
 
         cam.transform.position.z = 15;
         
-        SpriteNode object = new SpriteNode(Shapes.rectangle(), scene.primary); //Object(Mesh, Renderer);
-        scene.registerNode(object);
+        SpriteNode object = new SpriteNode(Shapes.rectangle()); //Object(Mesh, Renderer);
         object.shader = Defaults.defaultRender; //set shader
         object.texture = new Texture("assets/scribbles.png"); //override the default texture
 
@@ -52,25 +51,34 @@ public class Game1 {
         object.texRegion = new TextureRegion(object.texture, 2, 1, 2, 2);
         object.getMesh().recalculateUVs();
 
+        scene.primary.addRenderable(object); //TODO: streamline adding objects to renderers and scenes
+        scene.registerNode(object);
+
         boundingBox = new AABBNode();
-        boundingBox.transform.setParent(object.transform);
         scene.registerNode(boundingBox);
-        boundingBox.genVisual();
+
+        boundingBox.transform.setParent(object.transform);
+        boundingBox.genVisual(scene.primary);
         boundingBox.recalculate();
 
-        object2 = new SpriteNode(Shapes.rectangle(), scene.primary); //Object(Mesh, Renderer);
-        scene.registerNode(object2);
+        object2 = new SpriteNode(Shapes.rectangle()); //Object(Mesh, Renderer);
         object2.shader = Defaults.defaultRender; //set shader
         object2.texture = new Texture("assets/scribbles.png"); //override the default texture
         object2.transform.position = new Vector3f(0.5f, 3, 0);
 
+        scene.primary.addRenderable(object2);
+        scene.registerNode(object2);
+
         boundingBox2 = new AABBNode();
-        boundingBox2.transform.setParent(object2.transform);
         scene.registerNode(boundingBox2);
-        boundingBox2.genVisual();
+
+        boundingBox2.transform.setParent(object2.transform);
+        boundingBox2.genVisual(scene.primary);
         boundingBox2.recalculate();
         
-        UISpriteNode textObject = Defaults.defaultFont.getStringMesh("YAAAAAS BITCH!", scene.primaryUI);
+        UISpriteNode textObject = Defaults.defaultFont.getStringMesh("YAAAAAS BITCH!");
+        scene.primaryUI.addRenderable(textObject);
+        
         scene.registerNode(textObject);
         textObject.shader = Defaults.defaultUI;
         textObject.tint = new Vector4f(1.0f, 1.0f, 1.0f, 1.0f);

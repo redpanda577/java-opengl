@@ -14,8 +14,8 @@ public class LineNode extends MeshNode {
     public Vector2f start;
     public Vector2f end;
 
-    public LineNode(Vector2f start, Vector2f end, Renderer renderer){
-        super(null, renderer);
+    public LineNode(Vector2f start, Vector2f end){
+        super(null);
 
         generate(start, end);
 

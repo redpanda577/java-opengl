@@ -9,6 +9,7 @@ import org.joml.Vector3f;
 import com.redpanda577.engine.src.Defaults;
 import com.redpanda577.engine.src.nodes.LineNode;
 import com.redpanda577.engine.src.nodes.Node;
+import com.redpanda577.engine.src.rendering.renderers.Renderer;
 
 public class AABBNode extends Node{
     public Vector2f min;
@@ -32,18 +33,22 @@ public class AABBNode extends Node{
         if(useVisual) updateVisual();
     }
 
-    public void genVisual(){
+    public void genVisual(Renderer renderer){
         Vector2f zero = new Vector2f(0, 0);
-        line1 = new LineNode(zero, zero, parentScene.primary);
+        line1 = new LineNode(zero, zero);
+        renderer.addRenderable(line1);
         line1.shader = Defaults.defaultRender;
 
-        line2 = new LineNode(zero, zero, parentScene.primary);
+        line2 = new LineNode(zero, zero);
+        renderer.addRenderable(line2);
         line2.shader = Defaults.defaultRender;
 
-        line3 = new LineNode(zero, zero, parentScene.primary);
+        line3 = new LineNode(zero, zero);
+        renderer.addRenderable(line3);
         line3.shader = Defaults.defaultRender;
 
-        line4 = new LineNode(zero, zero, parentScene.primary);
+        line4 = new LineNode(zero, zero);
+        renderer.addRenderable(line4);
         line4.shader = Defaults.defaultRender;
 
         useVisual = true;

@@ -17,8 +17,8 @@ public class UISpriteNode extends MeshNode {
 
     public Vector4f tint;
 
-    public UISpriteNode(Mesh mesh, Renderer renderer){
-        super(mesh, renderer);
+    public UISpriteNode(Mesh mesh){
+        super(mesh);
         this.tint = new Vector4f(1, 1, 1, 1);
     }
 
